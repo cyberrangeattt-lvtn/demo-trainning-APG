@@ -1,0 +1,9 @@
+lab_username:
+  type: username
+
+lab_password:
+  type: password
+  length: 10
+
+root_flag:
+  type: text

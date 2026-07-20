@@ -1,0 +1,35 @@
+- name: sandbox-logging
+  src: https://github.com/cyberrangecz/ansible-role-sandbox-logging.git
+  scm: git
+  version: v1.0.0
+
+- name: chrony
+  src: https://github.com/cyberrangecz/ansible-role-chrony.git
+  scm: git
+  version: 1.0.1
+
+- name: hosts-aliases
+  src: https://github.com/cyberrangecz/ansible-role-hosts-aliases.git
+  scm: git
+  version: 1.0.0
+
+- name: user-access
+  src: https://github.com/cyberrangecz/ansible-role-user-access.git
+  scm: git
+  version: v1.0.0
+
+- name: sandbox-logging-bash
+  src: https://github.com/cyberrangecz/ansible-role-sandbox-logging-bash.git
+  scm: git
+  version: v1.0.0
+
+- name: sandbox-logging-msf
+  src: https://github.com/cyberrangecz/ansible-role-sandbox-logging-msf.git
+  scm: git
+  version: v1.0.0
+
+- name: sandbox-logging-forward
+  src: https://github.com/cyberrangecz/ansible-role-sandbox-logging-forward.git
+  scm: git
+  version: v1.0.0
+
