@@ -19,6 +19,7 @@
       user_access_sudo: True
     - role: attacker
     - role: chrony
+      password: "{{ lab_password }}"
 
 - name: Configure server
   hosts: server
