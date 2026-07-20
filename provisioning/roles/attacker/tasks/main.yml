@@ -34,7 +34,7 @@
     owner: user
     mode: '0644'
 
-- name: Add password to rockyou wordlist
+- name: Add password to passlist wordlist
   ansible.builtin.lineinfile:
     path: /usr/share/wordlists/passlist.txt
     line: '{{ password }}'
