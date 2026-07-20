@@ -15,12 +15,6 @@
     cmd: gunzip -k /usr/share/wordlists/rockyou.txt.gz
     creates: /usr/share/wordlists/rockyou.txt
 
-- name: Add password to rockyou wordlist
-  ansible.builtin.lineinfile:
-    path: /usr/share/wordlists/rockyou.txt
-    line: ILoveCTU
-    create: true
-
 - name: Remove all other wordlists except rockyou
   file:
     path: "/usr/share/wordlists/{{ item }}"
@@ -39,3 +33,9 @@
     dest: /usr/share/wordlists/passlist.txt
     owner: user
     mode: '0644'
+
+- name: Add password to rockyou wordlist
+  ansible.builtin.lineinfile:
+    path: /usr/share/wordlists/passlist.txt
+    line: '{{ password }}'
+    create: true
