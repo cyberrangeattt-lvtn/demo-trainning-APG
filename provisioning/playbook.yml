@@ -18,8 +18,8 @@
       user_access_password: Password123
       user_access_sudo: True
     - role: attacker
-    - role: chrony
       password: "{{ lab_password }}"
+    - role: chrony
 
 - name: Configure server
   hosts: server
