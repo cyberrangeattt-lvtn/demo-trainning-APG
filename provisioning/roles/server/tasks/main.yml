@@ -140,14 +140,6 @@
     vsftpd_binary.changed or vsftpd_conf.changed
     or vsftpd_pam.changed or vsftpd_unit.changed
 
-# - name: Create the system user 
-#   ansible.builtin.user:
-#     name: jack
-#     password: "{{ 'ILoveCTU' | password_hash('sha512', 'kypojuniorhacker') }}"
-#     shell: /bin/bash
-#     create_home: true
-#     update_password: always
-
 - name: Add user and set password
   user:
     name: '{{ username }}'
