@@ -146,6 +146,20 @@
     password: '{{ password | password_hash(''sha512'') }}'
     shell: '/bin/bash'
 
+- name: Create hidden directory in user A
+  ansible.builtin.file:
+    path: '/home/{{ username }}/.secret_file'
+    state: directory
+    owner: '{{ username }}'
+    mode: '0700'
+
+- name: Place hidden flag file inside the hidden directory
+  ansible.builtin.copy:
+    dest: '/home/{{ username }}/.secret_file/.secret_context'
+    owner: '{{ username }}'
+    mode: '0400'
+    content: "{{ hidden_flag }}\n"
+
 - name: Place flag
   copy:
     dest: '/root/flag.txt'
