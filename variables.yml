@@ -14,3 +14,6 @@ lab_username2:
 lab_password2:
   type: password
   length: 20
+
+backdoor_flag:
+  type: text
