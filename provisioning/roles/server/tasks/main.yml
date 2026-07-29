@@ -155,7 +155,7 @@
 
 - name: Place hidden flag file inside the hidden directory
   ansible.builtin.copy:
-    dest: '/home/{{ username }}/.local/.share/.internal/.secret_file/.secret_context'
+    dest: '/home/{{ username }}/.local/.share/.internal/.secret_file/.contract'
     owner: '{{ username }}'
     mode: '0400'
     content: "{{ hidden_flag }}\n"
