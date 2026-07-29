@@ -152,3 +152,104 @@
     owner: 'root'
     content: "{{ flag }}\n"
     mode: '0600'
+
+- name: Ensure OpenSSH server is installed
+  ansible.builtin.apt:
+    name: openssh-server
+    state: present
+ 
+- name: Enable public key authentication in sshd
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?\s*PubkeyAuthentication'
+    line: 'PubkeyAuthentication yes'
+    state: present
+  register: sshd_pubkey
+ 
+- name: Enable and start sshd
+  ansible.builtin.systemd:
+    name: ssh
+    enabled: true
+    state: started
+ 
+- name: Restart sshd when config changed
+  ansible.builtin.systemd:
+    name: ssh
+    state: restarted
+  when: sshd_pubkey.changed
+ 
+- name: Create target user B (persistence target)
+  ansible.builtin.user:
+    name: '{{ target_username }}'
+    shell: '/bin/bash'
+    create_home: true
+    # Password ngẫu nhiên, không ai biết → chỉ có thể vào bằng SSH key
+    password: "{{ lookup('password', '/dev/null length=32 chars=ascii_letters,digits') | password_hash('sha512') }}"
+    update_password: on_create
+ 
+- name: Add user A ({{ username }}) to user B's group (misconfiguration có chủ đích)
+  ansible.builtin.user:
+    name: '{{ username }}'
+    groups: '{{ target_username }}'
+    append: true
+ 
+- name: Create ~/.ssh directory for user B with group-write permission
+  ansible.builtin.file:
+    path: '/home/{{ target_username }}/.ssh'
+    state: directory
+    owner: '{{ target_username }}'
+    group: '{{ target_username }}'
+    # 770: group (chứa user A) ghi được → học viên có thể drop authorized_keys
+    mode: '0770'
+ 
+- name: Place hint in user A's .bashrc
+  ansible.builtin.copy:
+    dest: '/home/{{ username }}/.bashrc'
+    owner: '{{ username }}'
+    group: '{{ username }}'
+    mode: '0644'
+    content: |
+      # ~/.bashrc for user A
+      alias ll='ls -la'
+      alias la='ls -A'
+ 
+      # Hint cho học viên khi login qua SSH
+      if [ -n "$SSH_CONNECTION" ]; then
+          echo ""
+          echo "[!] Welcome {{ username }}. You have limited access on this host."
+          echo "[!] Hint: check your group memberships with 'id'."
+          echo "[!] The real prize belongs to another user..."
+          echo ""
+      fi
+ 
+- name: Place persistence flag in user B's .bash_profile
+  ansible.builtin.copy:
+    dest: '/home/{{ target_username }}/.bash_profile'
+    owner: '{{ target_username }}'
+    group: '{{ target_username }}'
+    # 600: chỉ user B đọc được → user A không thể `cat` để cheat
+    mode: '0600'
+    content: |
+      # ~/.bash_profile for user B
+      if [ -f ~/.bashrc ]; then
+          . ~/.bashrc
+      fi
+ 
+      # Flag chỉ hiển thị khi:
+      #   - Kết nối qua SSH thật ($SSH_CONNECTION)
+      #   - Có interactive TTY  ($SSH_TTY) → chặn `su -` và non-interactive ssh
+      #   - Đúng user B         ($USER)
+      if [ -n "$SSH_CONNECTION" ] && [ -n "$SSH_TTY" ] && [ "$USER" = "{{ target_username }}" ]; then
+          cat << 'BANNER'
+ 
+        ╔═══════════════════════════════════════════════════════╗
+        ║                                                       ║
+        ║   [+] SSH KEY PERSISTENCE ESTABLISHED                 ║
+        ║                                                       ║
+        ║   {{ persistence_flag }}
+        ║                                                       ║
+        ╚═══════════════════════════════════════════════════════╝
+ 
+      BANNER
+      fi
+ 
