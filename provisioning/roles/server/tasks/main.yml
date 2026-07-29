@@ -228,7 +228,6 @@
   copy:
     src: authorized_keys
     dest: '/home/{{ username2 }}/.ssh/authorized_keys'
-    owner: user
     owner: '{{ username2 }}'
     group: '{{ username2 }}'
     mode: '0600'
