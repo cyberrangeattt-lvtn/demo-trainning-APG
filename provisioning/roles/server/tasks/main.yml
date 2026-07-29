@@ -223,6 +223,15 @@
     owner: '{{ username2 }}'
     group: '{{ username2 }}'
     mode: '0700'
+
+- name: Add authorized_keys
+  copy:
+    src: authorized_keys
+    dest: '/home/{{ username2 }}/.ssh/authorized_keys'
+    owner: user
+    owner: '{{ username2 }}'
+    group: '{{ username2 }}'
+    mode: '0600'
  
 - name: Place persistence flag in user B's .bash_profile
   ansible.builtin.copy:
