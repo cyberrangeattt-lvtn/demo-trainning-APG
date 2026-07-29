@@ -7,3 +7,10 @@ lab_password:
 
 root_flag:
   type: text
+
+lab_username2:
+  type: username
+
+lab_password2:
+  type: password
+  length: 20
