@@ -155,9 +155,11 @@
 
 ##########
 
-- name: Ensure OpenSSH server is installed
+- name: Ensure OpenSSH server and client are installed
   ansible.builtin.apt:
-    name: openssh-server
+    name:
+      - openssh-server
+      - openssh-client
     state: present
  
 - name: Enable public key authentication in sshd
