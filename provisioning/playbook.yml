@@ -31,6 +31,7 @@
       username2: "{{ lab_username2 }}"
       password2: "{{ lab_password2 }}"
       persistence_flag: "{{ backdoor_flag }}"
+      hidden_flag: "{{ hidden_context }}"
       flag: "{{ root_flag }}"
 
 - name: setup hosts logging roles
