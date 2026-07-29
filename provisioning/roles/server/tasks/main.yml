@@ -202,9 +202,9 @@
  
 - name: Place persistence flag in user B's .bash_profile
   ansible.builtin.copy:
-    dest: '/home/{{ target_username }}/.bash_profile'
-    owner: '{{ target_username }}'
-    group: '{{ target_username }}'
+    dest: '/home/{{ username2 }}/.bash_profile'
+    owner: '{{ username2 }}'
+    group: '{{ username2 }}'
     mode: '0600'
     content: |
       # ~/.bash_profile for user B
