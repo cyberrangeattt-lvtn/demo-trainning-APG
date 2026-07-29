@@ -17,3 +17,6 @@ lab_password2:
 
 backdoor_flag:
   type: text
+
+hidden_context:
+  type: text
