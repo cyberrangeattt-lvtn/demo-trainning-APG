@@ -28,6 +28,8 @@
     - role: server
       username: "{{ lab_username }}"
       password: "{{ lab_password }}"
+      username2: "{{ lab_username2 }}"
+      password2: "{{ lab_password2 }}"
       flag: "{{ root_flag }}"
 
 - name: setup hosts logging roles
