@@ -20,8 +20,8 @@
     - role: attacker
       password: "{{ lab_password }}"
     - role: chrony
-        chrony_timezone: Asia/Ho_Chi_Minh
-        become: yes
+      chrony_timezone: Asia/Ho_Chi_Minh
+      become: yes
 
 - name: Configure server
   hosts: server
