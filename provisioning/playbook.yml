@@ -20,6 +20,9 @@
     - role: attacker
       password: "{{ lab_password }}"
     - role: chrony
+        chrony_timezone: Asia/Ho_Chi_Minh
+        chrony_ntp_server: pool.ntp.org
+        become: yes
 
 - name: Configure server
   hosts: server
