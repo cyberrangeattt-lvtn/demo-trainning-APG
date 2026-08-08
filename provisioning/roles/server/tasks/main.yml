@@ -179,17 +179,17 @@
 - name: Enable public key authentication in sshd
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
-    regexp: '^#?\s*PubkeyAuthentication'
+    regexp: '^#?PubkeyAuthentication'
     line: 'PubkeyAuthentication yes'
-    state: present
+  become: true
   register: sshd_pubkey
 
 - name: Enable password authentication in sshd
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
-    regexp: '^#?\s*PasswordAuthentication'
+    regexp: '^#?PasswordAuthentication'
     line: 'PasswordAuthentication yes'
-    state: present
+  become: true
   register: sshd_password
  
 - name: Enable and start sshd
